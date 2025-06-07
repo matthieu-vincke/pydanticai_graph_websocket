@@ -1,0 +1,11 @@
+pydantic-ai
+pydantic-ai[logfire]
+fastapi
+typing_extensions
+dotenv
+logfire[fastapi]
+logfire[sqlite3]
+uv
+fastapi
+websockets
+pydantic-ai-slim[groq]
