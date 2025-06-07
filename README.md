@@ -10,6 +10,7 @@ Step 1
 ```
 .env with 
 GROQ_API_KEY=xxxx
+API_KEY=xxxx
 ```
 
 Step 2

@@ -6,35 +6,58 @@
     <body>
         <h1>Pydantic Graph Websocket Chat</h1>
         <form action="" onsubmit="sendMessage(event)">
-            <input type="text" id="messageText" autocomplete="off"/>
+            <input type="text" id="messageText" autocomplete="off" placeholder="Type your message here"/>
             <button>Send</button>
         </form>
         <ul id='messages'>
         </ul>
         <script>
-            // Dynamically determine WebSocket URL
+            // Prompt the user for the API key
+            const apiKey = prompt("Please enter your API key:");
+
+            if (!apiKey) {
+                alert("API key is required to connect to the chat.");
+                throw new Error("API key is required");
+            }
+
+            // Dynamically determine WebSocket URL with API key
             function getWebSocketUrl() {
                 const host = window.location.host;
                 const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-                return `${protocol}//${host}/ws`;
+                return `${protocol}//${host}/ws?api_key=${encodeURIComponent(apiKey)}`;
             }
+
             const socketUrl = getWebSocketUrl();
             console.log(`Attempting to connect to: ${socketUrl}`);
 
             const ws = new WebSocket(socketUrl);
+
             ws.onmessage = function(event) {
-                var messages = document.getElementById('messages')
-                var message = document.createElement('li')
-                var content = document.createTextNode(event.data)
-                message.appendChild(content)
-                messages.appendChild(message)
+                var messages = document.getElementById('messages');
+                var message = document.createElement('li');
+                var content = document.createTextNode(event.data);
+                message.appendChild(content);
+                messages.appendChild(message);
             };
+
             function sendMessage(event) {
-                var input = document.getElementById("messageText")
-                ws.send(input.value)
-                input.value = ''
-                event.preventDefault()
+                var input = document.getElementById("messageText");
+                ws.send(input.value);
+                input.value = '';
+                event.preventDefault();
             }
+
+            ws.onopen = function() {
+                console.log("WebSocket connection established");
+            };
+
+            ws.onclose = function(event) {
+                console.log("WebSocket connection closed:", event);
+            };
+
+            ws.onerror = function(error) {
+                console.error("WebSocket error:", error);
+            };
         </script>
     </body>
 </html>
