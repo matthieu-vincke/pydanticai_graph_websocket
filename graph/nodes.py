@@ -8,6 +8,9 @@ from fastapi import WebSocket
 from groq import BaseModel
 from dotenv import load_dotenv
 
+from agents.ask_agent import ask_agent
+from agents.evaluate_agent import evaluate_agent, EvaluationOutput
+
 # Load environment variables from .env file
 load_dotenv()
 
@@ -23,8 +26,6 @@ class QuestionState:
     question: str | None = None
     ask_agent_messages: list[ModelMessage] = field(default_factory=list)
     evaluate_agent_messages: list[ModelMessage] = field(default_factory=list)
-
-ask_agent = Agent('groq:llama-3.3-70b-versatile', output_type=str)
 
 @dataclass
 class Answer(BaseNode[QuestionState, GraphDeps]):
@@ -54,12 +55,6 @@ class EvaluationOutput(BaseModel, use_attribute_docstrings=True):
     """Whether the answer is correct."""
     comment: str
     """Comment on the answer, reprimand the user if the answer is wrong."""
-
-evaluate_agent = Agent(
-    'groq:llama-3.3-70b-versatile',
-    output_type=EvaluationOutput,
-    system_prompt='Given a question and answer, evaluate if the answer is correct.',
-)
 
 @dataclass
 class Evaluate(BaseNode[QuestionState, GraphDeps, str]):
