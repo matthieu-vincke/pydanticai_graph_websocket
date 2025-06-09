@@ -4,7 +4,7 @@ Pydantic Graph Chat with web UI using websocket
 Built from https://ai.pydantic.dev/examples/question-graph/
 The example in Pydantic was not showing how to use websockets, so I added that.
 
-![Demo GIF](./images/demo_graph_ws.gif)
+![Demo GIF](./docs/images/demo_graph_ws.gif)
 
 Step 1
 ```
