@@ -27,7 +27,7 @@ app.include_router(api_app)
 
 @app.get("/")
 async def get():
-    return FileResponse('index.html')
+    return FileResponse('public/index.html')
 
 if __name__ == '__main__':
     import uvicorn
